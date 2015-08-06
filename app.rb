@@ -22,6 +22,8 @@ companies.each do |company|
 	company['contacts'].each do |contact| 
 		contact = $nutshell.get_contact(contact['id'])
 		tags.concat contact['tags']
+		# Break if primary contact exsists
+		break if tags.include? 'Primary Contact'
 	end
 
 	unless tags.include? 'Primary Contact'
@@ -30,4 +32,15 @@ companies.each do |company|
 	sleep(0.5)
 end
 
-puts companies_without_primary_contact
+# Create spreadsheet with missing companies.
+CSV.open("companies_without_primary_contact.csv", "wb") do |csv|
+	companies_without_primary_contact.each do |company|
+		csv << [].push(company["name"])
+	end
+end
+
+
+# Print message to Jenkins
+puts "################################################"
+puts "You have #{companies_without_primary_contact.length} companies without a primary contact."
+puts "################################################"
