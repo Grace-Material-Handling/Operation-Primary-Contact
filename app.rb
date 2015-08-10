@@ -29,7 +29,7 @@ companies.each do |company|
 	unless tags.include? 'Primary Contact'
 		companies_without_primary_contact.push company['name']
 	end
-	sleep(0.5)
+	sleep(0.6)
 end
 
 # Create spreadsheet with missing companies.
